@@ -7,13 +7,28 @@ const SingleColor = ({ rgb, weight, hexValue, index }) => {
   const hex = rgbToHex(...rgb) //Using the function that passes rgb to hex 
   const hexColor = `#${hexValue}`
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAlert(false)
+    }, 1500)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [alert])
+
   return (
     <article 
       className={`color ${index > 10 && 'color-light'}`} 
       style={{backgroundColor: `rgb(${bcgColor})`}}
-    >
+      onClick={() => {
+        setAlert(true)
+        navigator.clipboard.writeText(hexColor)
+      }}
+    >        
       <p className='percent-value'>{weight}%</p>
       <p className='color-value'>{hexColor}</p>
+      {alert && <p className='alert'>Copied to clipboard</p>}
     </article>
   )
 }
